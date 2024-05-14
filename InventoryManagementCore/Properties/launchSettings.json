@@ -10,7 +10,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5265"
     },
-    "https": {
+    "InvManageCore": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

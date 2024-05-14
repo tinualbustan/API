@@ -2,12 +2,12 @@
 {
     public class UserLoginVm
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        public required string UserName { get; set; }
+        public required string Password { get; set; }
     }
     public class UserLoginResult
     {
-        public string JwtToken { get; set; }
-        public string UserRole { get; set; }
+        public string? JwtToken { get; set; }
+        public List<string>? UserRole { get; set; }
     }
 }

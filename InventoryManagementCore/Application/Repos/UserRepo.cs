@@ -14,27 +14,27 @@ namespace InventoryManagementCore.Application.Repos
         {
             this.dbContext = dbContext;
         }
-        public async Task<string> CreateUserAsync(UserItem userInfo)
+        public async Task<string> CreateUserAsync(Al_UserItem userInfo)
         {
             userInfo.Id = Guid.NewGuid().ToString();
-            var col = dbContext.GetCollection<UserItem>();
+            var col = dbContext.GetCollection<Al_UserItem>();
             await col.InsertOneAsync(userInfo);
             return userInfo.Id;
         }
 
-        public async Task<UserItem> GetUserAsync(string id)
+        public async Task<Al_UserItem> GetUserAsync(string id)
         {
-            var col = dbContext.GetCollection<UserItem>();
+            var col = dbContext.GetCollection<Al_UserItem>();
             var item = await col.Find(x => x.Id == id).FirstOrDefaultAsync();
             return item;
         }
 
         public async Task<UserLoginResult> GetUserLoginAsync(string userName, string password)
         {
-            var col = dbContext.GetCollection<UserItem>();
+            var col = dbContext.GetCollection<Al_UserItem>();
             var item = await col.Find(x => x.UserName.ToLower() == userName.ToLower() && x.Password == password).FirstOrDefaultAsync();
             if (item != null)
-                return new UserLoginResult { JwtToken = Guid.NewGuid().ToString(), UserRole = item?.Role?.FirstOrDefault() };
+                return new UserLoginResult { JwtToken = Guid.NewGuid().ToString(), UserRole = item?.Role};
             throw new Exception("User Not Found");
         }
     }

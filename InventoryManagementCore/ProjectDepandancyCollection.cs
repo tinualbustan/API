@@ -10,15 +10,23 @@ namespace InventoryManagementCore
         {
             return services
                 .AddSingleton<IDbContext, DbContext>()
-                .AddSingleton(typeof(IAuditedCollection<>), typeof(AuditedCollection<>));
+                .AddSingleton(typeof(IAuditedCollection<>), typeof(AuditedCollection<>))
+                .AddCors(options =>
+                {
+                    options.AddPolicy("AllowAnyOrigin",
+                        builder =>
+                        {
+                            builder.AllowAnyOrigin()
+                                   .AllowAnyMethod()
+                                   .AllowAnyHeader();
+                        });
+                });
 
         }
         public static IServiceCollection AddProjectRepository(this IServiceCollection services)
         {
             return services
-                .AddTransient<IUserRepo, UserRepo>()
-                ;
-            //.AddTransient<IUserRepository, UserRepository>();
+                .AddTransient<IUserRepo, UserRepo>();
         }
         public static IServiceCollection AddProjectQueries(this IServiceCollection services)
         {
