@@ -11,7 +11,7 @@ namespace InventoryManagementCore.Application.Services
         private readonly string issuer;
         private readonly string audience;
 
-        public JWTServiceProvider(string secretKey, string issuer, string audience)9
+        public JWTServiceProvider(string secretKey, string issuer, string audience)
         {
             this.secretKey = secretKey;
             this.issuer = issuer;

@@ -17,7 +17,7 @@ namespace InventoryManagementCore.API.Controllers
             this.userRepo = userRepo;
         }
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUserAsync(Al_UserItem userInfo)
+        public async Task<IActionResult> CreateUserAsync(UserInfo userInfo)
         {
             var res = await userRepo.CreateUserAsync(userInfo);
             return Ok(res);
@@ -25,7 +25,7 @@ namespace InventoryManagementCore.API.Controllers
         [HttpGet("get")]
         public async Task<IActionResult> GetUserAsync(string id)
         {
-            Al_UserItem res = await userRepo.GetUserAsync(id);
+            UserInfo res = await userRepo.GetUserAsync(id);
             return Ok(res);
         }
         [HttpPost("login")]

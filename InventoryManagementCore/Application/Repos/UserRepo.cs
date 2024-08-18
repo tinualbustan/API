@@ -1,4 +1,5 @@
 ﻿using InventoryManagementCore.API.ViewModels;
+using InventoryManagementCore.Application.DTOs;
 using InventoryManagementCore.Application.Interfaces;
 using InventoryManagementCore.Domain.Entities;
 using InventoryManagementCore.Infrastructure.Services;
@@ -14,27 +15,35 @@ namespace InventoryManagementCore.Application.Repos
         {
             this.dbContext = dbContext;
         }
-        public async Task<string> CreateUserAsync(Al_UserItem userInfo)
+        public async Task<string> CreateUserAsync(UserInfoDto userInfoDto)
         {
-            userInfo.Id = Guid.NewGuid().ToString();
-            var col = dbContext.GetCollection<Al_UserItem>();
+            var userInfo = userInfoDto.ToUserInfo();
+            IMongoCollection<UserInfo> col = dbContext.GetCollection<UserInfo>();
             await col.InsertOneAsync(userInfo);
             return userInfo.Id;
         }
 
-        public async Task<Al_UserItem> GetUserAsync(string id)
+        public async Task<long> UpdateUserAsync(UserInfoDto userInfoDto)
         {
-            var col = dbContext.GetCollection<Al_UserItem>();
-            var item = await col.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var userInfo = userInfoDto.ToUserInfo();
+            IMongoCollection<UserInfo> col = dbContext.GetCollection<UserInfo>();
+            var result = await col.ReplaceOneAsync(x => x.Id == userInfo.Id, userInfo);
+            return result.ModifiedCount;
+        }
+
+        public async Task<UserInfo> GetUserAsync(string id)
+        {
+            var col = dbContext.GetCollection<UserInfo>();
+            UserInfo item = await col.Find(x => x.Id == id).FirstOrDefaultAsync();
             return item;
         }
 
         public async Task<UserLoginResult> GetUserLoginAsync(string userName, string password)
         {
-            var col = dbContext.GetCollection<Al_UserItem>();
+            var col = dbContext.GetCollection<UserInfo>();
             var item = await col.Find(x => x.UserName.ToLower() == userName.ToLower() && x.Password == password).FirstOrDefaultAsync();
             if (item != null)
-                return new UserLoginResult { JwtToken = Guid.NewGuid().ToString(), UserRole = item?.Role};
+                return new UserLoginResult { JwtToken = "Dummy Token Ignore", UserRole = item?.Roles };
             throw new Exception("User Not Found");
         }
     }

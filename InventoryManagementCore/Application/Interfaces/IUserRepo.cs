@@ -5,8 +5,8 @@ namespace InventoryManagementCore.Application.Interfaces
 {
     public interface IUserRepo
     {
-        Task<string> CreateUserAsync(Al_UserItem userInfo);
-        Task<Al_UserItem> GetUserAsync(string id);
+        Task<string> CreateUserAsync(UserInfo userInfo);
+        Task<UserInfo> GetUserAsync(string id);
         Task<UserLoginResult> GetUserLoginAsync(string userName, string password);
     }
 }
